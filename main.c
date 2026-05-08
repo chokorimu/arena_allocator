@@ -1,38 +1,35 @@
 #include "arena.h"
+#include "queue.h"
 #include <stdio.h>
+
+void process_batch(Arena *arena, Queue *q) {
+    printf("\n> MULAI BATCH PROCESSING %zu TUGAS\n", q->count);
+    int task_id;
+
+    while (dequeue(arena, q, &task_id)) {
+        printf("task ID: %d berhasil diproses\n", task_id);
+    }
+    arena_reset(arena);
+    queue_init(q);
+}
 
 int main() {
     Arena *arena = arena_init(64);
-    printf("\nkondisi awal:");
-    arena_dump(arena);
+    Queue job_queue;
+    queue_init(&job_queue);
 
-    uint32_t data1 = arena_alloc(arena, 32);
-    printf("setelah alokasi 32 byte (Offset: %u):", data1);
-    arena_dump(arena);
-
-    arena_reset(arena);
-    printf("setelah reset:");
-    arena_dump(arena);
-
-    printf("alokasi array 5 int:");
-    uint32_t arr_offset = arena_alloc(arena, 5 * sizeof(int));
-    int *arr = (int*)arena_get(arena, arr_offset);
-    for(int i = 0; i < 5; i++) {
-        arr[i] = (i + 1) * 10;
-    }
-    arena_dump(arena);
-
-    printf("alokasi linked list 3 node:\n");
-    uint32_t head = 0;
-    head = list_prepend(arena, head, 100);
-    head = list_prepend(arena, head, 200);
-    head = list_prepend(arena, head, 300);
-    list_print(arena, head);
-    arena_dump(arena);
-
-    arena_reset(arena);
-    printf("setelah reset:");
-    arena_dump(arena);
+    enqueue(arena, &job_queue, 1);
+    enqueue(arena, &job_queue, 2);
+    enqueue(arena, &job_queue, 3);
+    enqueue(arena, &job_queue, 4);
+    enqueue(arena, &job_queue, 5);
     
+    arena_dump(arena); 
+    queue_display(arena, &job_queue);
+    
+    process_batch(arena, &job_queue);
+    arena_dump(arena);
+    queue_display(arena, &job_queue);
+
     return 0;
 }

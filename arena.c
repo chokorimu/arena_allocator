@@ -8,7 +8,7 @@ Arena* arena_init(size_t size) {
     arena->buffer = (uint8_t*)malloc(size);
     memset(arena->buffer, 0, size);
     arena->size = size;
-    arena->offset = 0;
+    arena->offset = 4; 
     return arena;
 }
 

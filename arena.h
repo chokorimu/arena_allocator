@@ -18,7 +18,7 @@ typedef struct {
 typedef struct {
     uint32_t start_offset;
     size_t length;
-} ArenaArray;
+} Array;
 
 Arena* arena_init(size_t size);
 uint32_t arena_alloc(Arena *arena, size_t size);

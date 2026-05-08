@@ -6,7 +6,7 @@ else
     RUN = ./main
 endif
 
-main: main.c arena.c
-	gcc main.c arena.c -o $(COMPILE)
+main: main.c arena.c queue.c
+	gcc main.c arena.c queue.c -o $(COMPILE)
 	$(RUN)
     
