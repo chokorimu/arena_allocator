@@ -22,14 +22,16 @@ uint32_t arena_alloc(Arena *arena, size_t size) {
 }
 
 void* arena_get(Arena *arena, uint32_t offset) {
-    if (offset >= arena->size) return NULL;
+    if (offset >= arena->size) {
+        return NULL;
+    }
     return (void*)(arena->buffer + offset);
 }
 
 void arena_reset(Arena *arena) {
     arena->offset = 0;
     memset(arena->buffer, 0, arena->size);
-}
+} // O(1)
 
 void arena_dump(Arena *arena) {
     printf("\n> ARENA DUMP (Used: %zu/%zu) \n", arena->offset, arena->size);
@@ -59,8 +61,9 @@ void arena_dump(Arena *arena) {
 uint32_t list_prepend(Arena *arena, uint32_t head_offset, int value) {
     uint32_t new_node_offset = arena_alloc(arena, sizeof(Node));
 
-    if (new_node_offset == 0) return head_offset; 
-
+    if (new_node_offset == 0) {
+        return head_offset; 
+    }
     Node *new_node = (Node*)arena_get(arena, new_node_offset);
     new_node->value = value;
     new_node->next_offset = head_offset;

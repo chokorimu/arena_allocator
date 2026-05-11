@@ -22,7 +22,7 @@ int enqueue(Arena *arena, Queue *q, int task_id) {
     else {
         QueueNode *old_tail = (QueueNode*)arena_get(arena, q->tail_offset);
         old_tail->next_offset = new_offset;
-    }
+    } // O(1)
     q->tail_offset = new_offset;
     q->count++;
     return 1;
